@@ -1,0 +1,30 @@
+<% layout('./layout/page') -%>
+<% block('title', "WebMoney") -%>
+
+<div>
+    <input type="text" id="inp" name="LMI_PAYMENT_AMOUNT" class="form-control" autocomplete="off" autofocus placeholder="Введите сумму оплаты">
+    <input type="hidden" name="LMI_PAYMENT_DESC" value="Оплата игровой валюты">
+    <input type="hidden" name="LMI_PAYMENT_NO" value="<%= code * 10 %>">
+    <input type="hidden" name="LMI_PAYEE_PURSE" value="Z145179295679">
+    <input type="hidden" name="LMI_SIM_MODE" value="0">
+    <input type="hidden" name="LMI_RESULT_URL" value="<%= domain + "/accept" %>">
+    <input type="hidden" name="LMI_SUCCESS_URL" value="<%= domain %>">
+    <input type="hidden" name="LMI_SUCCESS_METHOD" value="2">
+    <input type="hidden" name="LMI_FAIL_URL" value="<%= domain %>">
+    <input type="hidden" name="LMI_FAIL_METHOD" value="2">
+    <button class="btn btn-default">Submit</button>
+</div>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<script>
+    $(".btn").click(function(){
+        var input2 = document.getElementById('inp');
+        var sv = input2.value;
+        var moptions = {
+            LMI_PAYMENT_AMOUNT: sv,
+            LMI_PAYMENT_NO: <%= code * 10 %>,
+            LMI_RESULT_URL: "<%= domain + "/accept" %>"
+        }
+        $.post("http://localhost:6400/", moptions);
+        $.post("/pay", {am: sv});
+    });
+</script>
